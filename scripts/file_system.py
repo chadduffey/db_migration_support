@@ -2,6 +2,7 @@
 
 import os
 
+
 class FS(object):
 
 	def __init__(self, db_folder, box_folder):
@@ -17,3 +18,27 @@ class FS(object):
 		else:
 			os.mkdir(box_folder)
 			print("[*] Created Box Folder")
+
+		self.box_folder = box_folder
+		self.db_folder = db_folder
+
+	def _email_filename_fix(self, email):
+		return email.replace("@", "_at_")
+
+	def box_folder_exists(self):
+		return os.path.isdir(box_folder)
+
+
+	def dropbox_folder_exists(self):
+		return os.path.isdir(db_folder)
+
+
+	def create_box_metafile(self):
+		pass
+
+
+	def create_dropbox_metafile(self, user_email):
+		print("Working with: {}".format(user_email))
+		filename = self._email_filename_fix(user_email)
+		print("Converted to: {}".format(filename))
+

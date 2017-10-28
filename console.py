@@ -39,5 +39,6 @@ if __name__ == "__main__":
 	#print(file_types)
 	#print(file_sizes)
 
-	file_system.FS(DROPBOX_USERS_DIR, BOX_USERS_DIR)
+	fsobject = file_system.FS(DROPBOX_USERS_DIR, BOX_USERS_DIR)
+	fsobject.create_dropbox_metafile("test@test.com")
 
