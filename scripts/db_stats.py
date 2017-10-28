@@ -1,5 +1,7 @@
 import dropbox
 
+### IMPORTANT!!! CONVERT TO LOCAL FILE PARSING FOR SPEED. TAKE DEPENDENCY ON DIR_LISTING. 
+
 stats_dict = {}
 size_dict = {}
 
