@@ -1,8 +1,11 @@
 import dropbox
+import json
 
-def dropbox_listing(dbx, user_id, path, testing_mode=False):
+def dropbox_listing(dbx, user_id, path, out_filename):
 
-	listing = []
+	
+	listing = []  
+	print(listing)
 
 	try:
 		dir_listing = dbx.as_user(user_id).files_list_folder(path)
@@ -18,12 +21,15 @@ def dropbox_listing(dbx, user_id, path, testing_mode=False):
 			if type(item) == dropbox.files.FolderMetadata: 
 				print("{}".format(item.path_display))
 				listing.extend(item.name)
-				if not testing_mode:
-					dropbox_stats(dbx, user_id, item.path_display, testing_mode)
+
+				dropbox_listing(dbx, user_id, item.path_display, out_filename)
+
 	except:		
 		if path == "":
 			path = "{folder root}"
 		
 		print("[!] Failed to return path {}".format(path))
+
+	
 
 	return listing

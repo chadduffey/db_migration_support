@@ -22,7 +22,7 @@ class FS(object):
 		self.box_folder = box_folder
 		self.db_folder = db_folder
 
-	def _email_filename_fix(self, email):
+	def email_filename_fix(self, email):
 		return email.replace("@", "_at_")
 
 	def box_folder_exists(self):
@@ -36,9 +36,4 @@ class FS(object):
 	def create_box_metafile(self):
 		pass
 
-
-	def create_dropbox_metafile(self, user_email):
-		print("Working with: {}".format(user_email))
-		filename = self._email_filename_fix(user_email)
-		print("Converted to: {}".format(filename))
 

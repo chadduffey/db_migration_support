@@ -16,29 +16,30 @@ BOX_USERS_DIR = "Box_Users" #do not change this and push to github without .giti
 
 if __name__ == "__main__":
 
-	#dbx = dropbox.DropboxTeam(TOKEN)
+	dbx = dropbox.DropboxTeam(TOKEN)
 	
 	#db_stats.dropbox_stats(dbx, "", True)
 	
-	#team_members = db_members.retrieve_member_list(dbx, False, False)
+	team_members = db_members.retrieve_member_list(dbx, False, False)
 
-	#test - max 10 users
-	'''
+	fsobject = file_system.FS(DROPBOX_USERS_DIR, BOX_USERS_DIR)
+
 	count = 0
+
 	for member in team_members:
-		print("\n\n{}".format(member.profile.email))
-		dir_listing.dropbox_listing(dbx, member.profile.team_member_id, "", testing_mode=True)
-		if count >= 10:
-			break
+		print("\n\n[*] Working with {}".format(member.profile.email))
 		
+		email_file_name = DROPBOX_USERS_DIR + "/" + fsobject.email_filename_fix(member.profile.email)
+
+		dir_listing.dropbox_listing(dbx, member.profile.team_member_id, "", email_file_name)
+	
 		count = count + 1
-	'''
+	
+		if count > 10:
+			break
+
 
 	#test
 	#file_types, file_sizes = db_stats.dropbox_stats(dbx, team_members[2].profile.team_member_id, "", False)
 	#print(file_types)
 	#print(file_sizes)
-
-	fsobject = file_system.FS(DROPBOX_USERS_DIR, BOX_USERS_DIR)
-	fsobject.create_dropbox_metafile("test@test.com")
-
