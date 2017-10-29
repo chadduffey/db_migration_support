@@ -24,19 +24,12 @@ if __name__ == "__main__":
 
 	fsobject = file_system.FS(DROPBOX_USERS_DIR, BOX_USERS_DIR)
 
-	count = 0
-
 	for member in team_members:
 		print("\n\n[*] Working with {}".format(member.profile.email))
 		
 		email_file_name = DROPBOX_USERS_DIR + "/" + fsobject.email_filename_fix(member.profile.email)
 
 		dir_listing.dropbox_listing(dbx, member.profile.team_member_id, "", email_file_name)
-	
-		count = count + 1
-	
-		if count > 10:
-			break
 
 
 	#test
