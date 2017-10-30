@@ -24,6 +24,8 @@ if __name__ == "__main__":
 
 	fsobject = file_system.FS(DROPBOX_USERS_DIR, BOX_USERS_DIR)
 
+
+	#create metadata files for Dropbox if needed
 	for member in team_members:
 		print("\n\n[*] Working with {}".format(member.profile.email))
 		
@@ -37,7 +39,18 @@ if __name__ == "__main__":
 		else:
 			print("Metadata file found for {}".format(member.profile.email))
 
-	
+	all_db_files = os.listdir(DROPBOX_USERS_DIR)
+
+
+	#parse metadata files
+	for file in all_db_files:
+		f = DROPBOX_USERS_DIR + "/" + file
+		if os.stat(f).st_size != 0:
+			file = open(f, 'r', encoding = "ISO-8859-1")
+			print(file.readline())
+			file.close()
+		else:
+			print("{} is empty".format(file))
 		
 	#test
 	#file_types, file_sizes = db_stats.dropbox_stats(dbx, team_members[2].profile.team_member_id, "", False)
