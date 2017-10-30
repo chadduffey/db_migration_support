@@ -27,11 +27,18 @@ if __name__ == "__main__":
 	for member in team_members:
 		print("\n\n[*] Working with {}".format(member.profile.email))
 		
+		#we should only go back for API if the local cache does not exist...
+
 		email_file_name = DROPBOX_USERS_DIR + "/" + fsobject.email_filename_fix(member.profile.email)
+		
+		if not os.path.isfile(email_file_name):
+			print("No Metadata found for {} - fetching".format(member.profile.email))
+			dir_listing.dropbox_listing(dbx, member.profile.team_member_id, "", email_file_name)
+		else:
+			print("Metadata file found for {}".format(member.profile.email))
 
-		dir_listing.dropbox_listing(dbx, member.profile.team_member_id, "", email_file_name)
-
-
+	
+		
 	#test
 	#file_types, file_sizes = db_stats.dropbox_stats(dbx, team_members[2].profile.team_member_id, "", False)
 	#print(file_types)
