@@ -16,7 +16,7 @@ def _write_member_file(member, listing):
 	f = open(USERS_DIR + member.profile.email, 'w')
 
 	for item in listing:
-		f.write(item)
+		f.write(item + "\n")
 
 	f.close()
 
@@ -24,6 +24,8 @@ def _write_member_file(member, listing):
 def process_member(member):
 
 	print("Processing {}".format(member.profile.email))
+	
+	#Dont process members who we already have metadata for:
 	if os.path.exists(USERS_DIR + member.profile.email):
 		print("\tmetafile for {} already exists.".format(member.profile.email))
 		return {
@@ -31,10 +33,12 @@ def process_member(member):
 				'content' : 'no_change'
 			}
 
+	#process member:
 	listing = library.dropbox_listing(dbx, member.profile.team_member_id, "")
 	_write_member_file(member, listing)
 	print("\tCompleted {}, {} items located".format(member.profile.email, len(listing)))
 	
+	#return a dictionary for the member to the multithreaded handler. 
 	return {
 			'id': member.profile.email,
 			'content' : listing
@@ -44,14 +48,11 @@ def process_member(member):
 if __name__ == "__main__":
 
 	print("Retrieving members")
-	members = library.retrieve_member_list(dbx, recursive=False, debug=False)
+	members = library.retrieve_member_list(dbx, recursive=True, debug=False)
 	print("{} Members Retrieved.".format(len(members)))
 
-	print(process_member(members[0]))
-		
+	#Threaded call into process member:		
 	pool = multiprocessing.Pool()
-	result = pool.map(process_member, members)
-
-	print(result) 
+	result = pool.map(process_member, members) 
 
 	

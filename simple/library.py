@@ -29,7 +29,9 @@ def dropbox_listing(dbx, user_id, path):
     try:
         dir_listing = dbx.as_user(user_id).files_list_folder(path)
 
-        #fix paging... must go past 1000...
+        #need to fix paging... must go past 1000... stopgap is to log this:
+        if dir_listing.has_more:
+            print("[!] Need to process {} again with recursive dir_listing".format(user_id))
 
         for item in dir_listing.entries:
             
