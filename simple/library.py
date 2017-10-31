@@ -47,7 +47,7 @@ def dropbox_listing(dbx, user_id, path):
         if path == "":
             path = "{folder root}"
         
-        print("[!] failure in dropbox_listing on {} for {}".format(path, user_id))
+        print("\t[!] failure in dropbox_listing on {} for {}".format(path, user_id))
 
     return listing
 

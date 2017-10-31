@@ -1,8 +1,9 @@
 import collections
-import multiprocessing
+import concurrent.futures
 
 import dropbox
 import os
+import time
 
 import library
 
@@ -23,7 +24,7 @@ def _write_member_file(member, listing):
 
 def process_member(member):
 
-	print("Processing {}".format(member.profile.email))
+	print("Process {} working on {}".format(os.getpid(), member.profile.email))
 	
 	#Dont process members who we already have metadata for:
 	if os.path.exists(USERS_DIR + member.profile.email):
@@ -47,12 +48,19 @@ def process_member(member):
 
 if __name__ == "__main__":
 
+	#retrieve members
+	start = time.time()
 	print("Retrieving members")
 	members = library.retrieve_member_list(dbx, recursive=True, debug=False)
-	print("{} Members Retrieved.".format(len(members)))
+	end = time.time()
+	print("{} Members Retrieved in {} seconds".format(len(members), end - start))
 
-	#Threaded call into process member:		
-	pool = multiprocessing.Pool()
-	result = pool.map(process_member, members) 
+	#parrellel process calls into process member:		
+	start = time.time()
+	with concurrent.futures.ProcessPoolExecutor() as executor:
+		result = executor.map(process_member, members)
+	end = time.time()
+	print("Processed members in {} seconds".format(end - start))
+
 
 	
